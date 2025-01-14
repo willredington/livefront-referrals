@@ -65,6 +65,15 @@ export const handler = async (
       });
     }
 
+    if (referralRequest.status === ReferralRequestStatus.COMPLETED) {
+      return jsonResponse({
+        statusCode: 200,
+        body: {
+          referralRequest,
+        },
+      });
+    }
+
     if (referralRequest.status !== ReferralRequestStatus.VERIFIED) {
       return jsonResponse({
         statusCode: 409,
