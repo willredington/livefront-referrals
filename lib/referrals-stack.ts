@@ -1,16 +1,21 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { ReferralStack } from "./stack/referral";
+import { ApiStack } from "./stack/api";
 
 export class ReferralsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const referralStack = new ReferralStack(this, "ReferralStack");
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'ReferralsQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    new ApiStack(this, "ApiStack", {
+      getReferralRequestLambda: referralStack.getReferralRequestLambda,
+      createReferralRequestLambda: referralStack.createReferralRequestLambda,
+      verifyReferralRequestLambda: referralStack.verifyReferralRequestLambda,
+      completeReferralRequestLambda:
+        referralStack.completeReferralRequestLambda,
+      handleReferralLinkLambda: referralStack.handleReferralLinkLambda,
+    });
   }
 }
