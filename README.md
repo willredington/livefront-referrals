@@ -2,6 +2,16 @@
 
 Open in postman - `postman.zip`, import the collection
 
+API Url: https://15u2xzh0bk.execute-api.us-east-2.amazonaws.com/prod
+
+## **Setup**
+
+- Installation `npm install`
+- Run unit tests `npm test`
+- Run integration tests `API_URL=https://15u2xzh0bk.execute-api.us-east-2.amazonaws.com/prod npm run test:e2e`
+- Deploy `cdk deploy`
+- Destroy `cdk destroy`
+
 ## **Overview**
 
 The Referral API enables users to create and manage referral requests, validate them, and complete the lifecycle when a referred user signs up. It includes functionality for tracking referral status and handling referral links.
