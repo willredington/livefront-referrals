@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest",
+    "test": "jest --testPathPattern=test/unit",
+    "test:e2e": "jest --testPathPattern=test/e2e",
     "cdk": "cdk"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "@aws-sdk/client-dynamodb": "^3.726.1",
     "@aws-sdk/lib-dynamodb": "^3.726.1",
     "aws-cdk-lib": "2.175.1",
+    "axios": "^1.7.9",
     "constructs": "^10.0.0",
     "dotenv": "^16.4.7",
     "uuid": "^11.0.5",
