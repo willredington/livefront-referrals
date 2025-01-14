@@ -1,4 +1,7 @@
-import { APIGatewayProxyWithCognitoAuthorizerHandler } from "aws-lambda";
+import {
+  APIGatewayProxyResult,
+  APIGatewayProxyWithCognitoAuthorizerEvent,
+} from "aws-lambda";
 import { z } from "zod";
 import { getUserIdFromRequest } from "../../../domain/auth";
 import { DynamoDBService } from "../../../domain/db";
@@ -19,11 +22,9 @@ const ExpectedQueryParametersSchema = z.object({
   code: z.string(),
 });
 
-export const handler: APIGatewayProxyWithCognitoAuthorizerHandler = async (
-  event
-) => {
-  console.log("event", JSON.stringify(event, null, 2));
-
+export const handler = async (
+  event: APIGatewayProxyWithCognitoAuthorizerEvent
+): Promise<APIGatewayProxyResult> => {
   const queryParametersParseResult = ExpectedQueryParametersSchema.safeParse(
     event.queryStringParameters
   );
