@@ -33,6 +33,7 @@ export class ReferralStack extends cdk.NestedStack {
         name: "code",
         type: dynamo.AttributeType.STRING,
       },
+      timeToLiveAttribute: "expiresAt",
     });
 
     const tableEnvs = {

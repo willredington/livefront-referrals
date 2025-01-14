@@ -4,7 +4,6 @@ export enum ReferralRequestStatus {
   PENDING = "PENDING",
   COMPLETED = "COMPLETED",
   VERIFIED = "VERIFIED",
-  EXPIRED = "EXPIRED",
 }
 
 export const ReferralRequestSchema = z.object({
@@ -18,7 +17,7 @@ export const ReferralRequestSchema = z.object({
 
 export type ReferralRequest = z.infer<typeof ReferralRequestSchema>;
 
-// dynamo cannot process date object, so we need to convert it to string
+// dynamo cannot process date object, so we need to convert it to string when inserting into dynamo
 export type CreateReferralRequestInput = Omit<
   ReferralRequest,
   "createdAt" | "expiresAt"

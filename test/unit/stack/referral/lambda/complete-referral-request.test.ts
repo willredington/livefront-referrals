@@ -70,7 +70,7 @@ describe("stack/referral/lambda/complete-referral-request", () => {
       createdAt: new Date(),
       expiresAt: new Date(new Date().getTime() + 1000),
       parentReferralCode: "parentReferralCode",
-      status: ReferralRequestStatus.COMPLETED,
+      status: ReferralRequestStatus.PENDING,
     });
 
     const response = await handler(event);

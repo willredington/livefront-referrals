@@ -28,7 +28,7 @@ The Referral API enables users to create and manage referral requests, validate 
 2. **Deferred Deep Link (Redirect to App Store)**:
 
    - The referral code is embedded in a link shared with the referred user.
-   - When the link is clicked, it redirects the user to the appropriate app store, if its not a supported platform (meaning not android or ios) it returns a 400
+   - When the link is clicked on a mobile device, it redirects the user to the appropriate app store, if its not a supported platform (meaning not android or ios) it returns a 400
 
 3. **Verify Referral**:
 
@@ -40,8 +40,8 @@ The Referral API enables users to create and manage referral requests, validate 
    - After successful verification AND sign up, the client will completed the referral.
    - The status transitions from `verified` to `completed`.
 
-5. **Expire Referral**:
-   - If the referred user does not act within the expiration period, the referral transitions to `expired`, any attempts to verify or complete the referral code will return a 409
+5. **Expired Referrals**:
+   - If the referred user does not act within the expiration period (7 days), the referral transitions to `expired` and will eventually be deleted from the database, any attempts to verify or complete the referral code will return a 409
 
 ---
 
