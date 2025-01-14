@@ -65,6 +65,16 @@ export const handler = async (
       });
     }
 
+    // If the referral request is already verified, return the referral request
+    if (referralRequest.status === ReferralRequestStatus.VERIFIED) {
+      return jsonResponse({
+        statusCode: 200,
+        body: {
+          referralRequest,
+        },
+      });
+    }
+
     if (referralRequest.status !== ReferralRequestStatus.PENDING) {
       return jsonResponse({
         statusCode: 409,
