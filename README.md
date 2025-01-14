@@ -1,5 +1,7 @@
 # **Referral System Documentation**
 
+Open in postman - `postman.zip`, import the collection
+
 ## **Overview**
 
 The Referral API enables users to create and manage referral requests, validate them, and complete the lifecycle when a referred user signs up. It includes functionality for tracking referral status and handling referral links.
@@ -195,11 +197,73 @@ The Referral API enables users to create and manage referral requests, validate 
 
 ---
 
-## **Future Considerations**
-
-- **Rewards**: Integration with a rewards system to issue incentives for completed referrals.
-- **Analytics**: Add tracking for referral link clicks and conversions.
+## Mobile App Flows
 
 ---
 
-This Markdown document provides a comprehensive overview of the referral system, lifecycle, and API details while being concise and easy to read. Let me know if you'd like to tweak or expand it!
+### **1. Get a List of Referrals**
+
+- **Action**: Fetch the list of referrals for the logged-in user to display in the app.
+- **Purpose**: Allow the user to view their referral history, including statuses (`pending`, `verified`, `completed`, `expired`).
+- **API Endpoint**: `GET /referral/list`
+
+---
+
+### **2. Create a Referral**
+
+- **Action**: User initiates the creation of a new referral request.
+- **Purpose**: Generate a referral request
+- **Flow**:
+  1. App sends the request to the backend.
+  2. App receives the referral request.
+- **API Endpoint**: `POST /referral/request`
+
+---
+
+### **3. Send the Referral Link**
+
+- **Action**: Allow the user to share the referral link via messaging apps, email, or social media.
+- **Purpose**: Ensure the referred user receives the referral link containing the referral code.
+- **Flow**:
+  1. App constructs the referral link: `https://<base-url>/link?parentReferralCode=<parentReferralCode>&code=<referralCode>`.
+  2. App opens the native sharing UI to send the link to the user
+
+---
+
+### **4. Handle the Referral Link**
+
+- **Action**: When the referred user clicks the link on a mobile device, the app processes it.
+- **Purpose**: Redirect the referred user to the appropriate app store
+- **Flow**:
+  1. App detects the referral link via deferred deep linking.
+  2. App extracts the `code` and the `parentReferralCode` from the link.
+
+---
+
+### **5. Verify the Referral**
+
+- **Action**: The app verifies the referral code before the referred user completes the signup.
+- **Purpose**: Ensure the referral code is valid and applicable to the current signup process.
+- **Flow**:
+  1. During the signup flow, the app sends the `code` to the backend for verification.
+  2. Backend validates the referral and returns a success/failure response.
+- **API Endpoint**: `POST /referral/verify`
+
+---
+
+### **6. User Signs Up**
+
+- **Action**: The referred user completes the signup process in the app.
+- **Purpose**: Register the user and associate their profile with the referral code.
+- **Flow**:
+  1. App submits the signup details along with the `referralCode`.
+
+---
+
+### **7. Complete the Referral Request**
+
+- **Action**: After signup, the app completes the referral request.
+- **Purpose**: Finalize the referral process, updating the status to `completed` and issuing rewards (if applicable).
+- **Flow**:
+  1. App calls the backend to mark the referral as completed using the same `code` and `parentReferralCode` as the signup
+- **API Endpoint**: `POST /referral/complete`
