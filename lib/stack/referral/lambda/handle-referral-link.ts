@@ -2,15 +2,26 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { z } from "zod";
 import { jsonResponse } from "../../../util/http";
 import { getDeepLink, Platform } from "../../../util/link";
+import {
+  ReferralRequest,
+  ReferralRequestSchema,
+} from "../../../domain/referral/type";
+import { DynamoDBService } from "../../../domain/db";
+import { getReferralRequest } from "../../../domain/referral";
 
 const ExpectedQueryParametersSchema = z.object({
   parentReferralCode: z.string(),
   code: z.string(),
 });
 
+const dbService = new DynamoDBService<ReferralRequest>({
+  schema: ReferralRequestSchema,
+});
+
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+  console.log(JSON.stringify(event, null, 2));
   const queryParametersParseResult = ExpectedQueryParametersSchema.safeParse(
     event.queryStringParameters
   );
@@ -26,6 +37,24 @@ export const handler = async (
   }
 
   const { parentReferralCode, code } = queryParametersParseResult.data;
+
+  const referralRequest = await getReferralRequest({
+    parentReferralCode,
+    code,
+    dbService,
+  });
+
+  console.log(JSON.stringify(referralRequest, null, 2));
+
+  if (!referralRequest) {
+    console.error("Referral request not found");
+    return jsonResponse({
+      statusCode: 404,
+      body: {
+        message: "Referral request not found",
+      },
+    });
+  }
 
   const userAgent = event.headers["User-Agent"] || "";
   const isAndroid = /android/i.test(userAgent);
@@ -46,6 +75,8 @@ export const handler = async (
       code,
       platform: isAndroid ? Platform.ANDROID : Platform.IOS,
     });
+
+    console.log(JSON.stringify(deepLink, null, 2));
 
     return {
       body: "",

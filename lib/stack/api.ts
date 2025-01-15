@@ -19,8 +19,9 @@ export class ApiStack extends cdk.NestedStack {
 
     this.api = new apig.RestApi(this, "Api");
 
-    const referralResource = this.api.root.addResource("referral");
-    const linkResource = this.api.root.addResource("link");
+    const v1Resource = this.api.root.addResource("v1");
+
+    const referralResource = v1Resource.addResource("referral");
 
     referralResource
       .addResource("request")
@@ -49,6 +50,8 @@ export class ApiStack extends cdk.NestedStack {
         "GET",
         new apig.LambdaIntegration(props.getReferralRequestLambda)
       );
+
+    const linkResource = v1Resource.addResource("link");
 
     linkResource.addMethod(
       "GET",

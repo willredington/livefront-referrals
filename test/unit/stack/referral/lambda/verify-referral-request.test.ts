@@ -19,6 +19,26 @@ describe("stack/referral/lambda/verify-referral-request", () => {
     jest.clearAllMocks();
   });
 
+  it("should return 404 if the referral request is not found", async () => {
+    const event = {
+      queryStringParameters: {
+        code: "abc",
+      },
+    } as unknown as APIGatewayProxyWithCognitoAuthorizerEvent;
+
+    mockGetUserProfile.mockResolvedValue({
+      name: "john",
+      userId: "user1",
+      referralCode: "123",
+    });
+
+    mockGetReferralRequest.mockResolvedValue(null);
+
+    const response = await handler(event);
+
+    expect(response.statusCode).toBe(404);
+  });
+
   it("should return 400 if its expired", async () => {
     const event = {
       queryStringParameters: {

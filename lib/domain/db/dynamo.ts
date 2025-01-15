@@ -26,12 +26,12 @@ export class DynamoDBService<T> {
     this.docClient = DynamoDBDocumentClient.from(new DynamoDBClient());
   }
 
-  async queryOne(params: GetCommandInput): Promise<T> {
+  async queryOne(params: GetCommandInput): Promise<T | null> {
     try {
       const result = await this.docClient.send(new GetCommand(params));
 
       if (!result.Item) {
-        throw new Error("Item not found");
+        return null;
       }
 
       return this.itemSchema.parse(result.Item);

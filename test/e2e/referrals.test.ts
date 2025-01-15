@@ -11,7 +11,7 @@ describe("e2e/referrals", () => {
       Math.random().toString(36).substring(2, 15);
 
     const newReferralResponse = await axios.post(
-      `${API_URL}/referral/request`,
+      `${API_URL}/v1/referral/request`,
       {
         name: randomName,
       }
@@ -33,8 +33,38 @@ describe("e2e/referrals", () => {
 
     const referralRequest = newReferralResponse.data.referralRequest;
 
+    console.log(JSON.stringify(referralRequest, null, 2));
+
+    const referralLink = `${API_URL}/v1/link?parentReferralCode=${referralRequest.parentReferralCode}&code=${referralRequest.code}`;
+
+    const androidReferralLinkResponse = await axios.get(referralLink, {
+      headers: {
+        "User-Agent": "android",
+      },
+      maxRedirects: 0,
+      validateStatus: (status) => status === 302,
+    });
+
+    expect(androidReferralLinkResponse.status).toBe(302);
+    expect(androidReferralLinkResponse.headers.location).toContain(
+      "play.google.com"
+    );
+
+    const iosReferralLinkResponse = await axios.get(referralLink, {
+      headers: {
+        "User-Agent": "iphone",
+      },
+      maxRedirects: 0,
+      validateStatus: (status) => status === 302,
+    });
+
+    expect(iosReferralLinkResponse.status).toBe(302);
+    expect(iosReferralLinkResponse.headers.location).toContain(
+      "apps.apple.com"
+    );
+
     const verifyReferralResponse = await axios.post(
-      `${API_URL}/referral/verify`,
+      `${API_URL}/v1/referral/verify`,
       null,
       {
         params: {
@@ -46,7 +76,7 @@ describe("e2e/referrals", () => {
     expect(verifyReferralResponse.status).toBe(200);
 
     const completeReferralResponse = await axios.post(
-      `${API_URL}/referral/complete`,
+      `${API_URL}/v1/referral/complete`,
       null,
       {
         params: {

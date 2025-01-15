@@ -81,7 +81,7 @@ The Referral API enables users to create and manage referral requests, validate 
 
 **GET /link**
 
-- **Description**: Handle a referral link click and redirect to the appropriate destination based on the platform.
+- **Description**: Handle a referral link click and redirect to the appropriate destination based on the platform. Platform is determined by the user agent.
 - **Query Parameters**:
   - `code`: Referral code from the link.
   - `parentReferralCode`: The parent referral code from the request.
@@ -191,7 +191,6 @@ The Referral API enables users to create and manage referral requests, validate 
 1. **`pending`**: Referral is created and awaiting action from the referred user.
 2. **`verified`**: Referral is validated BEFORE the user signs up.
 3. **`completed`**: Referral is successfully completed after the user signs up.
-4. **`expired`**: Referral has passed its expiration time without being acted upon.
 
 ---
 

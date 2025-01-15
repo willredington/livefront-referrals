@@ -54,6 +54,15 @@ export const handler = async (
       dbService,
     });
 
+    if (!referralRequest) {
+      return jsonResponse({
+        statusCode: 404,
+        body: {
+          message: "Referral request not found",
+        },
+      });
+    }
+
     const isExpired = referralRequest.expiresAt <= new Date();
 
     if (isExpired) {
