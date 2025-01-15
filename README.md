@@ -87,6 +87,7 @@ The Referral API enables users to create and manage referral requests, validate 
   - `parentReferralCode`: The parent referral code from the request.
 - **Response**:
   - `302 Found`: Redirect to the app store or web page.
+  - `404 Not Found`: Referral request not found
   - `400 Bad Request`: Invalid or missing referral code or an unsupported platform
 
 ---
@@ -98,6 +99,7 @@ The Referral API enables users to create and manage referral requests, validate 
 - **Description**: Verify the referral code after a user signs up.
 - **Errors**:
   - `400`: Missing referral code
+  - `404 Not Found`: Referral request not found
   - `409`: Referral is in an invalid state, cannot be verified
   - `500`: Something went wrong
 - **Request Body**:
@@ -129,6 +131,7 @@ The Referral API enables users to create and manage referral requests, validate 
 - **Description**: Mark a referral as completed after verification.
 - **Errors**:
   - `400`: Missing referral code
+  - `404 Not Found`: Referral request not found
   - `409`: Referral is in an invalid state, cannot be completed
   - `500`: Something went wrong
 - **Request Body**:
