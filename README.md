@@ -41,7 +41,7 @@ The Referral API enables users to create and manage referral requests, validate 
    - The status transitions from `verified` to `completed`.
 
 5. **Expired Referrals**:
-   - If the referred user does not act within the expiration period (7 days), the referral transitions to `expired` and will eventually be deleted from the database, any attempts to verify or complete the referral code will return a 409
+   - If the referred user does not act within the expiration period (7 days), the referral transitions to `expired` and will eventually be deleted from the database via dynamos TTL field (expiresAt), any attempts to verify or complete the referral code will return a 409
 
 ---
 
