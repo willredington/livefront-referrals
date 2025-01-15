@@ -21,7 +21,6 @@ const dbService = new DynamoDBService<ReferralRequest>({
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  console.log(JSON.stringify(event, null, 2));
   const queryParametersParseResult = ExpectedQueryParametersSchema.safeParse(
     event.queryStringParameters
   );
@@ -44,10 +43,7 @@ export const handler = async (
     dbService,
   });
 
-  console.log(JSON.stringify(referralRequest, null, 2));
-
   if (!referralRequest) {
-    console.error("Referral request not found");
     return jsonResponse({
       statusCode: 404,
       body: {
@@ -75,8 +71,6 @@ export const handler = async (
       code,
       platform: isAndroid ? Platform.ANDROID : Platform.IOS,
     });
-
-    console.log(JSON.stringify(deepLink, null, 2));
 
     return {
       body: "",

@@ -1,6 +1,6 @@
 # **Referral System Documentation**
 
-Open in postman - `postman.zip`, import the collection
+Open in postman - `postmanv1.zip`, import the collection
 
 API Url: https://15u2xzh0bk.execute-api.us-east-2.amazonaws.com/prod
 
@@ -234,7 +234,7 @@ The Referral API enables users to create and manage referral requests, validate 
 - **Action**: Allow the user to share the referral link via messaging apps, email, or social media.
 - **Purpose**: Ensure the referred user receives the referral link containing the referral code.
 - **Flow**:
-  1. App constructs the referral link: `https://<base-url>/link?parentReferralCode=<parentReferralCode>&code=<referralCode>`.
+  1. App constructs the referral link: `https://<base-url>/v1/link?parentReferralCode=<parentReferralCode>&code=<referralCode>`.
   2. App opens the native sharing UI to send the link to the user
 
 ---
